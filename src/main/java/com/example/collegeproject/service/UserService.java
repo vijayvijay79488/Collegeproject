@@ -27,12 +27,13 @@ public class UserService {
 		return "saved";
 	}
 
-	public String LoginUser(loginDTO user) throws manaul {
+	public User LoginUser(loginDTO user) throws manaul {
 		// TODO Auto-generated method stub
 		User one = userRepository.findByEmail(user.getEmail());
 		if (one != null) {
 			if (one.getPasswordHash().equals(user.getPassword())) {
-				return one.getFullName() + "  Login Succeful";
+				return one;
+//				return one.getFullName() + "  Login Succeful";
 			}
 		}
 		throw new manaul("Incorrect Input");
