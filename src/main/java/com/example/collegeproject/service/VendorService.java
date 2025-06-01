@@ -10,7 +10,9 @@ import com.example.collegeproject.repository.VendorRepository;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 class manual extends Exception{
 	public manual(String msg) {
 		super(msg);
@@ -58,26 +60,11 @@ public class VendorService {
 		return "succfuly";
 		
 	}
-//	public String saveImage(ImageRequest request) {
-//    	Image imageEntity = new Image();
-//        imageEntity.setName(request.getName());
-//
-//        String base64Data = request.getImage();
-//        String[] parts = base64Data.split(",");
-//
-//        if (parts.length > 1) {
-//            byte[] imageBytes = Base64.getDecoder().decode(parts[1]);
-//            imageEntity.setImage(imageBytes);
-//        } else {
-//            throw new IllegalArgumentException("Invalid base64 image data");
-//        }
-//
-//        // ✅ This line was missing!
-//        imageRepository.save(imageEntity);
-//
-//        return "success";
-//    }
-	
+
+	static String encodeBase64Image(byte[] base64Dat) {
+		String base64= Base64.getEncoder().encodeToString(base64Dat);
+		return "data:image/png;base64,"+base64;
+	}
 	static byte[] decodeBase64Image(String base64Data) {
 	  
 	        String[] parts = base64Data.split(",");
@@ -85,4 +72,44 @@ public class VendorService {
 	        
 	    
 	}
+
+
+
+	public List<VendorRegister> getallvendor() {
+		// TODO Auto-generated method stub
+		 List<Vendor> vendors = vendorRepository.findAll();
+
+		    return vendors.stream().map(vendor -> {
+		        VendorRegister dto = new VendorRegister();
+		        dto.setBusinessName(vendor.getBussinessName());
+		        dto.setEmail(vendor.getEmail());
+		        dto.setPhone(vendor.getPhone());
+		        dto.setPassword(vendor.getPasswordHash());
+		        dto.setLocation(vendor.getLocation());
+		        dto.setCategory(vendor.getCategory());
+		        dto.setYearsOfExperience(vendor.getYearsofexperience());
+		        dto.setServiceDescription(vendor.getServicediscription());
+		        dto.setTermsAndCondition(vendor.getTermsandconditon());
+
+		        // LONGBLOB to Base64
+		        if (vendor.getPortfolio() != null) {
+		            dto.setPortfolioBase64(encodeBase64Image(vendor.getPortfolio()));
+		        }
+
+		        if (vendor.getCertificationimage() != null) {
+		            dto.setCertificationImageBase64(encodeBase64Image(vendor.getCertificationimage()));
+		        }
+
+		        return dto;
+		    }).collect(Collectors.toList());
+	}
+
+
+
+	public String updateprofile(int id) {
+		
+		return null;
+	}
+	
+	
 }

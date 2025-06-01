@@ -10,6 +10,7 @@ import com.example.collegeproject.model.Vendor;
 import com.example.collegeproject.service.VendorService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
  
@@ -42,5 +43,26 @@ public class VendorController {
     @GetMapping("/login")
     public Optional<Vendor> loginVendor(@RequestParam String email, @RequestParam String password) {
         return vendorService.getVendorByEmailAndPassword(email, password);
+    }
+    @GetMapping("/getvendorlist")
+    	public List<VendorRegister> getallvendor(){
+    		List<VendorRegister> res = vendorService.getallvendor();
+    		return res;
+    	}
+    
+    @PutMapping("/updateprofile")
+    public ResponseEntity<Map<String,Object>> updateprofile(@RequestParam int id){
+    Map<String,Object> res = new HashMap<String,Object>();
+    try {
+    	String response = vendorService.updateprofile(id);
+    	res.put("status", HttpStatus.OK);
+    	res.put("response", response);
+    	
+    }catch(Exception e) {
+    	res.put("status", HttpStatus.BAD_REQUEST);
+    	res.put("message", e.getMessage());
+
+    }
+    return new ResponseEntity<Map<String,Object>>(res, (HttpStatusCode) res.get("status"));
     }
 }
