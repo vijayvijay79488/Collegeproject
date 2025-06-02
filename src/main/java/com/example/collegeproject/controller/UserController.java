@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.collegeproject.DTO.UserDTO;
 import com.example.collegeproject.DTO.loginDTO;
 import com.example.collegeproject.model.User;
 import com.example.collegeproject.service.UserService;
@@ -25,7 +26,7 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/register")
-	ResponseEntity<Map<String, Object>> registerUser(@RequestBody User user) {
+	ResponseEntity<Map<String, Object>> registerUser(@RequestBody UserDTO user) {
 		Map<String, Object> res = new HashMap<String, Object>();
 
 		try {

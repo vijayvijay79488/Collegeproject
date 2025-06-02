@@ -1,8 +1,15 @@
 package com.example.collegeproject.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.collegeproject.DTO.UserDTO;
 import com.example.collegeproject.DTO.loginDTO;
 import com.example.collegeproject.model.User;
 import com.example.collegeproject.repository.UserRepository;
@@ -17,15 +24,31 @@ class manaul extends Exception {
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private VendorService vendorservice;
 
-	public String registerUser(User user) throws manaul {
-		if (userRepository.existsByEmail(user.getEmail()) || userRepository.existsByPhone(user.getPhone())) {
-			throw new manaul("Already User Registered");
-		}
-		user.setUserId(null);
-		userRepository.save(user);
-		return "saved";
+	public String registerUser(UserDTO user) throws manaul {
+	    User newone = new User();
+	    newone.setUserId(null);
+//	    newone.setCreatedAt(Timestamp.from(null));
+	    newone.setFullName(user.getFullName());
+	    newone.setEmail(user.getEmail());
+	    newone.setPhone(user.getPhone());
+	    newone.setLocation(user.getLocation());
+	    newone.setPasswordHash(user.getPassword());
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	    LocalDate parsedDob = LocalDate.parse(user.getDob(), formatter);
+	    newone.setDob(parsedDob);
+
+	    byte[] certBytes = vendorservice.decodeBase64Image(user.getProfilePicture());
+	    newone.setProfilePicture(certBytes);
+
+	    userRepository.save(newone);
+	    return "saved";
 	}
+
+
 
 	public User LoginUser(loginDTO user) throws manaul {
 		// TODO Auto-generated method stub

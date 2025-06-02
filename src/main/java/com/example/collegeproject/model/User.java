@@ -1,112 +1,111 @@
 package com.example.collegeproject.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer userId;
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
-	public Integer getUserId() {
-		return userId;
-	}
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    @Column(nullable = false)
+    private String phone;
 
-	public String getFullName() {
-		return fullName;
-	}
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    private String location;
 
-	public String getEmail() {
-		return email;
-	}
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Column(name = "dob")
+    private LocalDate dob; // ✅ changed from String to LocalDate
 
-	public String getPhone() {
-		return phone;
-	}
+    @Column(name = "created_at", updatable = false, insertable = false)
+    private Timestamp createdAt;
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    // ✅ Getters and Setters
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getProfilePicture() {
-		return profilePicture;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setProfilePicture(String profilePicture) {
-		this.profilePicture = profilePicture;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-	@Column(nullable = false)
-	private String fullName;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-	@Column(nullable = false, unique = true)
-	private String email;
+    public String getLocation() {
+        return location;
+    }
 
-	@Column(nullable = false)
-	private String phone;
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	@Column(nullable = false)
-	private String passwordHash;
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
 
-	private String location;
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 
-	private String profilePicture;
+    public LocalDate getDob() {
+        return dob;
+    }
 
-	@Column(name = "created_at", updatable = false)
-	private LocalDateTime createdAt;
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
 
-	@PrePersist
-	protected void onCreate() {
-		createdAt = LocalDateTime.now();
-	}
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
 
-	// ✅ Getters and Setters
-
-	// (You can generate them using your IDE or Lombok)
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
 }

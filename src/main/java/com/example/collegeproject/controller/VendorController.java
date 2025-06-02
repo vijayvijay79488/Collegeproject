@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.collegeproject.DTO.VendorRegister;
+import com.example.collegeproject.DTO.loginDTO;
+import com.example.collegeproject.model.User;
 import com.example.collegeproject.model.Vendor;
 import com.example.collegeproject.service.VendorService;
 
@@ -40,10 +42,21 @@ public class VendorController {
     	return new ResponseEntity<Map<String,Object>>(res, (HttpStatusCode) res.get("status"));
     	}
 
-    @GetMapping("/login")
-    public Optional<Vendor> loginVendor(@RequestParam String email, @RequestParam String password) {
-        return vendorService.getVendorByEmailAndPassword(email, password);
-    }
+    @PostMapping("/Login")
+	ResponseEntity<Map<String, Object>> LoginUser(@RequestBody loginDTO user) {
+		Map<String, Object> res = new HashMap<String, Object>();
+
+		try {
+			String response = vendorService.LoginUser(user);
+			res.put("status", HttpStatus.OK);
+			res.put("response", response);
+		} catch (Exception e) {
+			res.put("status", HttpStatus.BAD_REQUEST);
+			res.put("message", e.getMessage());
+		}
+		return new ResponseEntity<Map<String, Object>>(res, (HttpStatusCode) res.get("status"));
+
+	}
     @GetMapping("/getvendorlist")
     	public List<VendorRegister> getallvendor(){
     		List<VendorRegister> res = vendorService.getallvendor();
