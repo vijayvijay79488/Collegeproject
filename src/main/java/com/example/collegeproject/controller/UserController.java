@@ -46,7 +46,7 @@ public class UserController {
 		Map<String, Object> res = new HashMap<String, Object>();
 
 		try {
-			User response = userService.LoginUser(user);
+			UserDTO response = userService.LoginUser(user);
 			res.put("status", HttpStatus.OK);
 			res.put("response", response);
 		} catch (Exception e) {

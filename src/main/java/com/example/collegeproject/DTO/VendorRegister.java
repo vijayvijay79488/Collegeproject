@@ -1,6 +1,13 @@
 package com.example.collegeproject.DTO;
 
 public class VendorRegister {
+	private int id;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	private String businessName;
     private String email;
     private String phone;
@@ -79,4 +86,5 @@ public class VendorRegister {
 	}
 	private String certificationImageBase64;  // Base64-encoded image
     private String termsAndCondition;
+	
 }

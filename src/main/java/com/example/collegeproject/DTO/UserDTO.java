@@ -1,7 +1,14 @@
 package com.example.collegeproject.DTO;
 
 public class UserDTO {
-    private String fullName;
+	private int id;
+    public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	private String fullName;
     private String email;
     private String phone;
     private String password;

@@ -90,6 +90,35 @@ public class VendorService {
 		 System.out.println("Vendor count from DB: " + vendors.size());
 		    return vendors.stream().map(vendor -> {
 		        VendorRegister dto = new VendorRegister();
+		       dto.setId(vendor.getUserId());
+		        dto.setBusinessName(vendor.getBussinessName());
+		        dto.setEmail(vendor.getEmail());
+		        dto.setPhone(vendor.getPhone());
+		        dto.setPassword(vendor.getPasswordHash());
+		        dto.setLocation(vendor.getLocation());
+		        dto.setCategory(vendor.getCategory());
+		        dto.setYearsOfExperience(vendor.getYearsofexperience());
+		        dto.setServiceDescription(vendor.getServicediscription());
+		        dto.setTermsAndCondition(vendor.getTermsandconditon());
+
+		        // LONGBLOB to Base64
+		        if (vendor.getPortfolio() != null) {
+		            dto.setPortfolioBase64(encodeBase64Image(vendor.getPortfolio()));
+		        }
+
+		        if (vendor.getCertificationimage() != null) {
+		            dto.setCertificationImageBase64(encodeBase64Image(vendor.getCertificationimage()));
+		        }
+
+		        return dto;
+		    }).collect(Collectors.toList());
+	}
+	public List<VendorRegister> findCategory(String Category) {
+		// TODO Auto-generated method stub
+		 List<Vendor> vendors = vendorRepository.findByCategory(Category);
+		 System.out.println("Vendor count from DB: " + vendors.size());
+		    return vendors.stream().map(vendor -> {
+		        VendorRegister dto = new VendorRegister();
 		        dto.setBusinessName(vendor.getBussinessName());
 		        dto.setEmail(vendor.getEmail());
 		        dto.setPhone(vendor.getPhone());
@@ -114,7 +143,6 @@ public class VendorService {
 	}
 
 
-
 	public String updateprofile(int id) {
 		
 		return null;
@@ -131,5 +159,9 @@ public class VendorService {
 		}
 		throw new manaul("Incorrect Input");
 	}
+
+
+
+	
 	
 }

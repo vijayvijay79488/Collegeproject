@@ -62,6 +62,11 @@ public class VendorController {
     		List<VendorRegister> res = vendorService.getallvendor();
     		return res;
     	}
+    @GetMapping("/Catagory")
+    public List<VendorRegister> getcategory(String Catrgory){
+    	List<VendorRegister> res = vendorService.findCategory(Catrgory);
+    	return res;
+    }
     
     @PutMapping("/updateprofile")
     public ResponseEntity<Map<String,Object>> updateprofile(@RequestParam int id){
