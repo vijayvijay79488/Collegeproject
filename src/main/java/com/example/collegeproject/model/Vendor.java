@@ -1,6 +1,8 @@
 package com.example.collegeproject.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Vendor")
@@ -146,4 +148,15 @@ public class Vendor {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     // Getters and Setters
+    
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<WorkImage> workImages = new ArrayList<>();
+
+    public List<WorkImage> getWorkImages() {
+        return workImages;
+    }
+
+    public void setWorkImages(List<WorkImage> workImages) {
+        this.workImages = workImages;
+    }
 }

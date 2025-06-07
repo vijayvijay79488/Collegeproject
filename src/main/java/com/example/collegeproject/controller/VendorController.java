@@ -4,13 +4,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.collegeproject.DTO.VendorRegister;
+import com.example.collegeproject.DTO.Vendoroveralldata;
 import com.example.collegeproject.DTO.loginDTO;
 import com.example.collegeproject.model.User;
 import com.example.collegeproject.model.Vendor;
+import com.example.collegeproject.model.VendorRating;
+import com.example.collegeproject.model.WorkImage;
+import com.example.collegeproject.repository.VendorRatingRepository;
+import com.example.collegeproject.repository.WorkImageRepository;
 import com.example.collegeproject.service.VendorService;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +31,8 @@ import java.util.Optional;
 public class VendorController {
     @Autowired
     private VendorService vendorService;
+    @Autowired
+    private VendorRatingRepository ratingRepo;
 
     @PostMapping("/register")
     public ResponseEntity<Map<String,Object>> registerVendor(@RequestBody VendorRegister vendor) {
@@ -63,8 +72,8 @@ public class VendorController {
     		return res;
     	}
     @GetMapping("/Catagory")
-    public List<VendorRegister> getcategory(String Catrgory){
-    	List<VendorRegister> res = vendorService.findCategory(Catrgory);
+    public List<VendorRegister> getcategory(String category){
+    	List<VendorRegister> res = vendorService.findCategory(category);
     	return res;
     }
     
@@ -83,4 +92,44 @@ public class VendorController {
     }
     return new ResponseEntity<Map<String,Object>>(res, (HttpStatusCode) res.get("status"));
     }
+    
+    @Autowired
+    private WorkImageRepository workImageRepository;
+
+    @PostMapping("/{vendorId}/upload-work-photos")
+    public ResponseEntity<String> uploadPhotos(
+            @PathVariable Integer vendorId,
+            @RequestParam("files") List<MultipartFile> files
+    ) throws IOException {
+        vendorService.uploadWorkPhotos(vendorId, files);
+        return ResponseEntity.ok("Photos uploaded successfully.");
+    }
+
+    // Fetch work photos
+    @GetMapping("/{vendorId}/work-photos")
+    public ResponseEntity<List<String>> getVendorPhotos(@PathVariable Integer vendorId) {
+        List<String> photos = vendorService.getBase64WorkPhotos(vendorId);
+        return ResponseEntity.ok(photos);
+    }
+    
+  
+
+//    @PostMapping
+//    public ResponseEntity<VendorRating> submitRating(@RequestBody VendorRating rating) {
+//        return ResponseEntity.ok(ratingRepo.save(rating));
+//    }
+//
+//    @GetMapping("/{vendorId}")
+//    public ResponseEntity<List<VendorRating>> getRatings(@PathVariable int vendorId) {
+//        return ResponseEntity.ok(ratingRepo.findByVendorId(vendorId));
+//    }
+//    
+//    @GetMapping("/details")
+//    public ResponseEntity<Vendoroveralldata> getVendorDetails(@RequestParam String email) {
+//        Vendoroveralldata vendorDetails = vendorService.getVendorDetailsByEmail(email);
+//        return ResponseEntity.ok(vendorDetails);
+//    }
 }
+
+
+

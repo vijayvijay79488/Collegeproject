@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.example.collegeproject.DTO.UserDTO;
 import com.example.collegeproject.DTO.loginDTO;
 import com.example.collegeproject.model.User;
+import com.example.collegeproject.model.taskmodel;
+import com.example.collegeproject.repository.TaskLoginRepository;
 import com.example.collegeproject.repository.UserRepository;
 
 class manaul extends Exception {
@@ -103,5 +106,5 @@ public class UserService {
 	    }
 	    return Base64.getDecoder().decode(base64Image);
 	}
-
+	
 }
